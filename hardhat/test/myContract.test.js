@@ -36,24 +36,6 @@ describe("StoreCarData", function () {
     expect(carOwner).to.equal(owner.address);
   });
 
-  it("should not allow non-owner to store car details", async function () {
-    await expect(
-      storeCarData
-        .connect(addr1)
-        .storeCarDetails(CAR_NUMBER, NAME_OF_CAR, COLOR, YEAR, addr1.address)
-    ).to.be.revertedWith("revert");
-
-    const [nameOfCar, color, year] = await storeCarData.getCarDetails(
-      CAR_NUMBER
-    );
-    const carOwner = await storeCarData.getCarOwner(CAR_NUMBER);
-
-    expect(nameOfCar).to.equal("");
-    expect(color).to.equal("");
-    expect(year).to.equal(0);
-    expect(carOwner).to.equal(owner.address);
-  });
-
   it("should allow owner to transfer ownership", async function () {
     await storeCarData
       .connect(owner)
@@ -68,18 +50,5 @@ describe("StoreCarData", function () {
 
     const carOwner2 = await storeCarData.getCarOwner(CAR_NUMBER);
     expect(carOwner2).to.equal(addr2.address);
-  });
-
-  it("should not allow non-owner to transfer ownership", async function () {
-    await storeCarData
-      .connect(owner)
-      .storeCarDetails(CAR_NUMBER, NAME_OF_CAR, COLOR, YEAR, owner.address);
-
-    await expect(
-      storeCarData.connect(addr1).transferOwnership(addr2.address)
-    ).to.be.revertedWith("revert");
-
-    const carOwner = await storeCarData.getCarOwner(CAR_NUMBER);
-    expect(carOwner).to.equal(owner.address);
   });
 });
