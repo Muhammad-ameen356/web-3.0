@@ -7,9 +7,10 @@
 const hre = require("hardhat");
 
 async function main() {
-  const Greeter = await ethers.getContractFactory("Greeter");
-  const greeter = await Greeter.deploy();
-  console.log("Contract Address: ", greeter.address);
+  const StoreCarData = await hre.ethers.getContractFactory("StoreCarData");
+  const carData = await StoreCarData.deploy();
+  await carData.deployed();
+  console.log("Contract Address: ", carData.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
